@@ -17,6 +17,7 @@ import {TopBar} from './Components/TopBar';
 import {Modal} from './Components/Modal';
 import {Selector} from './Components/Selector';
 
+
 function App() {
     //Constants
     const paginationStep = numberOfItemsFitting;
@@ -32,14 +33,16 @@ function App() {
 
         getImages()
             .then((images) => images && setImages(images))
-            .catch((error) => console.log("Error fetching images", error));
+            .catch((error) => console.log('Error fetching images', error));
 
     }, []);
+
 
     //Methods
     function increasePaginationLimit(): void {
         setPaginationLimit(paginationLimit + paginationStep);
     }
+
 
     function filterImages(data: Image[]): typeof data {
         return data
@@ -47,32 +50,37 @@ function App() {
             .slice(0, paginationLimit);
     }
 
+
     function deleteImage(id: number): void {
         const filteredImages = images.filter((image) => image.id !== id);
         setImages(filteredImages);
     }
+
 
     function handleThumbnailClick(index: number) {
         setZoomedImageIndex(index);
         setIsModalVisible(true);
     }
 
+
     function getListOfAlbumIds(): number[] {
         return images
             .reduce<number[]>(
-                (res, {albumId}) => res.includes(albumId) ? res: [...res, albumId],
-                []
+                (res, {albumId}) => res.includes(albumId) ? res : [...res, albumId],
+                [],
             );
     }
 
+
     function handleSelectChange(id: number): void {
-        setSelectedAlbumId(isNaN(id) ? undefined :id);
+        setSelectedAlbumId(isNaN(id) ? undefined : id);
     }
+
 
     return (
         <div
             className="App"
-            style={{width: numberOfColumns * thumbnailSize,}}
+            style={{width: numberOfColumns * thumbnailSize}}
         >
             {filterImages(images).map((img, i) =>
                 <ViewThumbnail
@@ -80,7 +88,7 @@ function App() {
                     url={img.thumbnailUrl}
                     onImageClick={() => handleThumbnailClick(i)}
                     onDelete={() => deleteImage(img.id)}
-                />
+                />,
             )}
             <MoreButton onClick={increasePaginationLimit}>more</MoreButton>
             <TopBar>
@@ -91,7 +99,7 @@ function App() {
                 onClickAway={() => setIsModalVisible(false)}
                 visible={isModalVisible}
             >
-                <img src={images[zoomedImageIndex]?.url || ""} alt={'img'}/>
+                <img src={images[zoomedImageIndex]?.url || ''} alt={'img'}/>
                 {images[zoomedImageIndex]?.title}
             </Modal>
         </div>

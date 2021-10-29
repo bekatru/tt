@@ -1,4 +1,3 @@
-
 //Raw images data received from API
 export interface Image {
     id: number;
